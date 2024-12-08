@@ -30,7 +30,7 @@ async function getPhoto(){
     });
     */
 
-    fetch(`./netlify/functions/proxy-api?url=randomPic`)
+    fetch(`/.netlify/functions/proxy-api?url=randomPic`)
     .then(response => response.json())
     .then(data => {
 
@@ -61,7 +61,7 @@ async function searchPhotos(pageNr, query) {
         });
         */
 
-        fetch(`./netlify/functions/proxy-api?url=searchPhotos(${pageNr},${query})`)
+        fetch(`/.netlify/functions/proxy-api?url=searchPhotos(${pageNr},${query})`)
         //.then(response => response.json())
 
         const data = await response.json();
@@ -105,7 +105,7 @@ async function searchPerPage(pageNr, query) {
         });
         const data = await response.json();
         */
-       fetch(`./netlify/functions/proxy-api?url=searchPerPage(${pageNr},${query})`)
+       fetch(`/.netlify/functions/proxy-api?url=searchPerPage(${pageNr},${query})`)
         .then(response => response.json())
         .then(data => {
             return data
