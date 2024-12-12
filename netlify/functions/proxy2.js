@@ -1,7 +1,10 @@
 exports.handler = async (event, context) => {
+
+  /*
   const apiKey = process.env.API_KEY; // Store the API key securely in environment variables
   const { url, pageNr, query } = event.queryStringParameters || {}; // Extract query parameters
 
+  
   console.log('Incoming request:', { url, pageNr, query }); // Log inkommande parametrar
 
   if (!url) {
@@ -69,4 +72,6 @@ exports.handler = async (event, context) => {
       body: JSON.stringify({ error: 'Failed to fetch data from API', details: error.message }),
     };
   }
+    */
+  console.log('API_KEY:', process.env.API_KEY);
 };
