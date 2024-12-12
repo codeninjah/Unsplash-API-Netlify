@@ -30,7 +30,7 @@ async function getPhoto(){
     });
     */
 
-    fetch(`/.netlify/functions/proxy-api?url=${randomPic}`)
+    fetch(`/.netlify/functions/proxy-api?url=randomPic`)
     .then(response => response.json())
     .then(data => {
 
