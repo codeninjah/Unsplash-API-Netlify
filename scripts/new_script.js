@@ -13,6 +13,7 @@ header.addEventListener("click", () => {
 
 
 // Function to get a random photo
+// Works
 async function getPhoto(){
 
     photoDiv.innerHTML = " ";
@@ -23,22 +24,13 @@ async function getPhoto(){
         document.body.removeChild(document.getElementsByClassName("first-page-photo")[0]);
     }
 
-    /*
-    const url = 'https://api.unsplash.com/photos/random';
-    const response = await fetch(url, {
-        headers
-    });
-    */
-
-    fetch('/.netlify/functions/proxy2?url=randomPic')
+    fetch('/.netlify/functions/proxy?url=randomPic')
     .then(response => response.json())
     .then(data => {
-        console.log(data); // test
-        //const data = await response.json();
         const element = document.createElement("div");
         document.body.appendChild(element);
         element.classList.add("first-page-photo");
-        element.innerHTML = "<img src='" + data.data.urls.regular + "'</div>";
+        element.innerHTML = "<img src='" + data.urls.regular + "'</div>";
         const firstPagePhoto = element.getElementsByTagName("img")[0];
         firstPagePhoto.classList.add("singlePhoto");
     })
@@ -52,23 +44,28 @@ async function searchPhotos(pageNr, query) {
     photoDiv.innerHTML = "";
 
     if (query.length > 2) {
-        /*
-        photoDiv.innerHTML = "";
-        //const url = 'https://api.unsplash.com/search/photos?page=${pageNr}&query=${query}';
-        const url = `https://api.unsplash.com/search/photos?page=${pageNr}&query=${query}`;
-        const response = await fetch(url, {
-            headers
-        });
-        */
 
-        fetch(`/.netlify/functions/proxy?url=searchPhotos(${pageNr},${query})`)
-        //.then(response => response.json())
+    fetch(`/.netlify/functions/proxy?url=searchPhotos&pageNr=${pageNr}&query=${query}`)
+        .then((response) => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+            return response.json();
+        })
+        .then((data) => {
+            console.log('Search results (photos):', data);
+        })
+        .catch((error) => {
+            console.error('Error fetching searchPhotos:', error.message);
+        });
 
         const data = await response.json();
+        /*
         console.log(data);
         console.log(data.results[0]); //undefined
         console.log("Data total is: ", data.total);
         console.log("Total pages are: ", data.total_pages);
+        */
 
         
         var parent = photoDiv;
@@ -97,24 +94,27 @@ async function searchPhotos(pageNr, query) {
 
 
 async function searchPerPage(pageNr, query) {
-        //const url = 'https://api.unsplash.com/search/photos?page=${pageNr}&query=${query}';
-        /*
-        const url = `https://api.unsplash.com/search/photos?per_page=15&page=${pageNr}&query=${query}`;
-        const response = await fetch(url, {
-            headers
-        });
-        const data = await response.json();
-        */
-       fetch(`/.netlify/functions/proxy?url=searchPerPage(${pageNr},${query})`)
-        .then(response => response.json())
-        .then(data => {
-            return data
+        fetch(`/.netlify/functions/proxy?url=searchPerPage&pageNr=${pageNr}&query=${query}`)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+          return response.json();
         })
+        .then((data) => {
+          console.log('Search results (per page):', data);
+          renderImages(data); // Works!!
+        })
+        .catch((error) => {
+          console.error('Error fetching searchPerPage:', error.message);
+        });
         //return data;
 }
 
 // Function to render images
 function renderImages(data) {
+    console.log("Data is ");
+    console.log(data);
 
     const body = document.getElementsByTagName("body")[0];
     const firstPagePhotoDiv = document.getElementsByClassName("first-page-photo");
