@@ -2,7 +2,7 @@
 scripts/script.js
 scripts/new_script_2.js
 node_modules/
-netlify/functions/proxy.js
+netlify/functions/proxy2.js
 netlify/functions/test-fetch.js
 # Local Netlify folder
 .netlify

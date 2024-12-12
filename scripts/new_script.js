@@ -50,6 +50,8 @@ async function searchPhotos(pageNr, query) {
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
+        console.log("Response is");
+        console.log(response.json());
             return response.json();
         })
         .then((data) => {
@@ -60,13 +62,6 @@ async function searchPhotos(pageNr, query) {
         });
 
         const data = await response.json();
-        /*
-        console.log(data);
-        console.log(data.results[0]); //undefined
-        console.log("Data total is: ", data.total);
-        console.log("Total pages are: ", data.total_pages);
-        */
-
         
         var parent = photoDiv;
         var child = document.createElement("ul");
@@ -83,7 +78,7 @@ async function searchPhotos(pageNr, query) {
             let paginationLinkNumber = i + 1;
             //pagination.innerText += " " + i + " "; // Works to print the values of i
             //pagination.innerText += "It works!"; // WOrks to print "It works"
-            pagination.innerHTML += ` <a href="${searchPerPage(i, search_box.value)}" data-template="pagetemplate.html">${paginationLinkNumber}</a> `;
+            pagination.innerHTML += ` <a href="${searchPerPage(i, searchBox.value)}" data-template="pagetemplate.html">${paginationLinkNumber}</a> `;
         }
 
     } else if (query.length < 3) {
@@ -92,7 +87,7 @@ async function searchPhotos(pageNr, query) {
 }
 
 
-
+// Working
 async function searchPerPage(pageNr, query) {
         fetch(`/.netlify/functions/proxy?url=searchPerPage&pageNr=${pageNr}&query=${query}`)
         .then((response) => {
@@ -102,8 +97,8 @@ async function searchPerPage(pageNr, query) {
           return response.json();
         })
         .then((data) => {
-          console.log('Search results (per page):', data);
           renderImages(data); // Works!!
+          createPagination(data.total_pages, query) // Works!!
         })
         .catch((error) => {
           console.error('Error fetching searchPerPage:', error.message);
@@ -112,9 +107,8 @@ async function searchPerPage(pageNr, query) {
 }
 
 // Function to render images
+// Working
 function renderImages(data) {
-    console.log("Data is ");
-    console.log(data);
 
     const body = document.getElementsByTagName("body")[0];
     const firstPagePhotoDiv = document.getElementsByClassName("first-page-photo");
@@ -123,11 +117,9 @@ function renderImages(data) {
         body.removeChild(firstPagePhotoDiv[0]);
     }
 
-
         photoDiv.innerHTML = '';  // Clear previous content
-        data.results.forEach(photo => {
-            console.log("Images are rendered");
 
+        data.results.forEach(photo => {
             // Crate a div, add the class 'image-wrapper' and append it to photoDiv
             const imgWrapper = document.createElement("div");
             imgWrapper.classList.add("image-wrapper");
@@ -140,9 +132,7 @@ function renderImages(data) {
 
             // Create an image element and add all the needed properties
             const imgElement = document.createElement('img');
-            //imgElement.src = photo.urls.regular; // Testar
             imgElement.src = photo.urls.small // Thumbnail versionens
-            console.log("Thumbnail src is: ", imgElement.src);
             imgElement.modalsrc = photo.urls.regular; // I want to pass this property to the modal
             imgElement.alt = photo.alt_description;
             imgElement.className = "zoom-image fixed-size cursor-pointer m-2 openModal";
