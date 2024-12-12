@@ -1,3 +1,5 @@
+const axios = require('axios');
+
 exports.handler = async (event, context) => {
     const apiKey = process.env.API_KEY; // Store the API key securely in environment variables
   

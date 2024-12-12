@@ -1,6 +1,12 @@
+const axios = require('axios');
+
+require('dotenv').config();
+
+
 exports.handler = async (event, context) => {
   const apiKey = process.env.API_KEY;
   const { url } = event.queryStringParameters || {};
+  
   console.log('Incoming request:', { url }); // Logga inkommande förfrågan
 
   if (!url) {
@@ -29,10 +35,9 @@ exports.handler = async (event, context) => {
 
     console.log('API request URL:', apiUrl);
 
-    const axios = require('axios');
     const response = await axios.get(apiUrl, {
       headers: {
-        Authorization: `Bearer ${apiKey}`,
+        Authorization: `Client-ID ${apiKey}`, // OBS: "Client-ID" används här, inte "Bearer"
       },
     });
 

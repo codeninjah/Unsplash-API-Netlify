@@ -30,15 +30,15 @@ async function getPhoto(){
     });
     */
 
-    fetch(`/.netlify/functions/proxy-api?url=randomPic`)
+    fetch('/.netlify/functions/proxy2?url=randomPic')
     .then(response => response.json())
     .then(data => {
-
+        console.log(data); // test
         //const data = await response.json();
         const element = document.createElement("div");
         document.body.appendChild(element);
         element.classList.add("first-page-photo");
-        element.innerHTML = "<img src='" + data.urls.regular + "'</div>";
+        element.innerHTML = "<img src='" + data.data.urls.regular + "'</div>";
         const firstPagePhoto = element.getElementsByTagName("img")[0];
         firstPagePhoto.classList.add("singlePhoto");
     })
@@ -61,7 +61,7 @@ async function searchPhotos(pageNr, query) {
         });
         */
 
-        fetch(`/.netlify/functions/proxy-api?url=searchPhotos(${pageNr},${query})`)
+        fetch(`/.netlify/functions/proxy?url=searchPhotos(${pageNr},${query})`)
         //.then(response => response.json())
 
         const data = await response.json();
@@ -105,7 +105,7 @@ async function searchPerPage(pageNr, query) {
         });
         const data = await response.json();
         */
-       fetch(`/.netlify/functions/proxy-api?url=searchPerPage(${pageNr},${query})`)
+       fetch(`/.netlify/functions/proxy?url=searchPerPage(${pageNr},${query})`)
         .then(response => response.json())
         .then(data => {
             return data
